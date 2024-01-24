@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AwareTest.DataAccess\AwareTest.DataAccess.csproj" />
     <ProjectReference Include="..\AwareTest.ModelNew\AwareTest.ModelNew.csproj" />
-    <ProjectReference Include="..\DataAccess\AwareTest.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
