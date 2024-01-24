@@ -1,5 +1,4 @@
-﻿using AwareTest.Model.Model;
-using AwareTest.Model.Model.SqlModel;
+﻿using AwareTest.ModelNew.Model;
 using AwareTest.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +17,12 @@ namespace AwareTest.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("GetFromDB/GetEmployee")]
-        public async Task<IActionResult> GetEmployee()
+        [HttpGet("GetFromDB/GetEmployeeByID")]
+        public async Task<IActionResult> GetEmployeeByID(int id)
         {
             try
             {
-                var result = new List<EmployeeModel>();
-                result = _employeeService.GetAllEmployee();
+                var result = await _employeeService.GetEmployeeById(id);
 
                 return Ok(result);
             }

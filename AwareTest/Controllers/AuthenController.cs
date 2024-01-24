@@ -1,4 +1,4 @@
-﻿using AwareTest.Model.Model;
+﻿using AwareTest.ModelNew.Model;
 using AwareTest.Services.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

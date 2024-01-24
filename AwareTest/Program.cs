@@ -1,16 +1,19 @@
 using AwareTest.Controllers;
-using AwareTest.Data.IRepository;
-using AwareTest.Data.Repository;
-using AwareTest.Model.Model;
+using AwareTest.DataAccess.IRepositories;
+using AwareTest.DataAccess.Repositories;
+using AwareTest.Extensions;
+using AwareTest.ModelNew.Model;
 using AwareTest.Services.IService;
 using AwareTest.Services.Services;
 using AwareTest.Services.Services.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SPWCircularofLux.Data;
 using System.Text;
 
 
@@ -41,16 +44,31 @@ var builder = WebApplication.CreateBuilder(args);
       };
   });
     //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+    //builder.Services.AddAutoMapper(typeof(Program));
 
+    //builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+    //             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+    //         .AddEnvironmentVariables();
+
+    builder.Services.ConfigureService(builder.Configuration);
+
+    //builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+    //Configuration for SQL
+    builder.Services.AddDbContext<AwareServiceDbContext>(option =>
+    {
+        option.UseSqlServer("Name=AppSettings:Database");
+    });
     // configure strongly typed settings object
     services.Configure<AppSettingsModel>(builder.Configuration.GetSection("AppSettings"));
     services.AddHttpContextAccessor();
-
+    services.AddScoped<IUnitOfWork, UnitOfWork>();
     services.AddScoped<IEmployeeService, EmployeeService>();
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IJwtUtilsService, JwtUtilsService>();
 
-    services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+    //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 
     services.AddAuthorization(options =>
     {
